@@ -1,2 +1,2 @@
-# Python_Games
-Simple Pygame and terminal-based games.
+# Python_Projects
+Includes Pygame and terminal-based games, and some Machine Learning projects.
