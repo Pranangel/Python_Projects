@@ -9,3 +9,10 @@ blank_word = []
 hangman = 0
 w = 0
 l = 0
+
+#printing the board
+for letter in pick_word:
+    word.append(letter)
+    blank_word.append("_")
+print(blank_word)
+word_length = int(len(word))
