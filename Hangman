@@ -1,0 +1,11 @@
+import random
+
+#declaring VARs
+word_list = ["ALPHA","BETA","CHOCOLATE","DECEPTICON","EXCITE","FATE","GREEN","HOT","INTERNET","JESUS","KICK","LATERAL","MONOPOLY","NO","PYTHON","QUIRKY","RED","SNAKE","TUNGSTEN","URANUS","VENUS","WHITE","XENON","YEARBOOK","ZYZZ"]
+end = len(word_list)-1
+pick_word = word_list[random.randint(0,end)]
+word = []
+blank_word = []
+hangman = 0
+w = 0
+l = 0
