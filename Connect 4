@@ -1,0 +1,313 @@
+import pygame
+
+class Button():
+    def __init__(self,start_x,start_y,display_text,font_color,font,background_color):
+        self.x = start_x
+        self.y = start_y
+        self.display_text = display_text
+        self.button_title = font.render(display_text, True, font_color, background_color)
+        self.width = self.button_title.get_width()
+        self.height = self.button_title.get_height()
+
+    def get_title(self):
+        return self.button_title
+    
+    def get_coords(self):
+        return (self.x-self.width/2), (self.y-self.height/2)
+
+    def is_mouse_hovering(self,mouse_x,mouse_y):
+        if (self.x - (self.width/2) <= mouse_x <= self.x + (self.width/2)) and (self.y - (self.height/2) <= mouse_y <= self.y + (self.height/2)):
+            return True
+        return False
+
+def draw_board(board,screen,color,radius):
+    x = 50
+    y = 50
+    circle_count = 0
+    for o in board:
+        for p in o:
+            pygame.draw.circle(screen, color, (x, y), radius)
+            x += 115
+            circle_count += 1
+            if circle_count == 7:
+                pygame.draw.circle(screen, color, (x, y), radius)
+                x = 50
+                y += 100
+                circle_count = 0
+
+#updates the board matrix based on the x-coordinates of the mouse from the x_list
+def update_board(spot,matrix,turn,column):
+    for bottom in reversed(range(6)):
+        if matrix[bottom][spot] == 0:
+            if turn == True:
+                matrix[bottom][spot] = 1
+                return(turn,matrix)
+            if turn == False:
+                matrix[bottom][spot] = 2
+                return(turn,matrix)
+            if matrix[0][spot] != 0:
+                column.remove(column[spot])
+                return(spot)
+
+def draw_potential_chip(radius,spot,matrix,player_color,window):
+    if matrix[0][spot] == 0:
+        pygame.draw.circle(window, player_color, (50,50), radius)
+
+#method which complements the update_board() method visually
+def draw_player_chip(radius,player_1,player_2,window,matrix):
+    x = 50
+    y = 50
+    circle_count = 0
+    for row in matrix:
+        for pos in row:
+            if pos == 1:
+                pygame.draw.circle(window,player_1,(x,y),radius)
+            if pos == 2:
+                pygame.draw.circle(window,player_2,(x,y),radius)
+            x += 115
+            circle_count += 1
+            if circle_count == 7:
+                if pos == 1:
+                    pygame.draw.circle(window,player_1,(x,y),radius)
+                if pos == 2:
+                    pygame.draw.circle(window,player_2,(x,y),radius)
+                x = 50
+                y += 100
+                circle_count = 0
+
+#checking horizontal connections of four
+def check_horizontal(matrix,turn):
+
+    player_num = 0
+    if turn == True:
+        player_num = 1
+    if turn == False:
+        player_num = 2
+
+    game_end = False
+
+    for column in range(0,6):
+        horiz_count = 0
+        for row in range(0,6):
+            #if the first spot and the spot after are the same for 3 consecutive times, then there is a conenction of four
+            if player_num == matrix[column][row] == matrix[column][row+1]:
+                horiz_count += 1
+            if matrix[column][row] != 1:
+                horiz_count = 0
+            if horiz_count == 3:
+                game_end = True
+    
+    return game_end
+    
+#checking vertical connections of four
+def check_vertical(matrix,turn):
+    player_num = 0
+    if turn == True:
+        player_num = 1
+    if turn == False:
+        player_num = 2
+
+    game_end = False
+
+    vert_count = 0
+    for column in range(0,3):
+        for row in range(0,7):
+            if player_num == matrix[column][row] == matrix[column+1][row]:
+                vert_count += 1
+                if matrix[column][row] == matrix[column+2][row]:
+                    vert_count += 1
+                    if matrix[column][row] == matrix[column+3][row]:
+                        vert_count += 1
+            if matrix[column][row] != player_num:
+                vert_count = 0
+            if vert_count == 3:
+                game_end = True
+
+    return game_end
+
+#checking diagonal connections of four
+def check_diagonals(matrix,turn):
+    player_num = 0
+    if turn == True:
+        player_num = 1
+    if turn == False:
+        player_num = 2
+
+    game_end = False
+
+    #diagonal win conditions going to the left (\)
+    for column in range(0,3):
+        r_diag_count = 0
+        for row in range(0,4):
+            if player_num == matrix[column][row] == matrix[column+1][row+1]:
+                r_diag_count += 1
+                if matrix[column][row] == matrix[column+2][row+2]:
+                    r_diag_count += 1
+                    if matrix[column][row] == matrix[column+3][row+3]:
+                        r_diag_count += 1
+            if (matrix[column][row] != player_num):
+                r_diag_count = 0
+            if r_diag_count == 3:
+                game_end = True
+
+    #diagonal win conditions going to the right (/)
+    for column in range(0,3):
+        l_diag_count = 0
+        for row in reversed(range(3,7)):
+            if player_num == matrix[column][row] == matrix[column+1][row-1]:
+                l_diag_count += 1
+                if matrix[column][row] == matrix[column+2][row-2]:
+                    l_diag_count += 1
+                    if matrix[column][row] == matrix[column+3][row-3]:
+                        l_diag_count += 1
+            if (matrix[column][row] != player_num):
+                l_diag_count = 0
+            if l_diag_count == 3:
+                game_end = True
+
+    return(game_end)
+
+def draw_end_screen(display,win=False,lose=False,tie=False):
+    #code taken from pygame.readthedocs.io at https://pygame.readthedocs.io/en/latest/4_text/text.html
+    if win:
+        text = pygame.font.SysFont(None,100)
+        end = text.render('RED WINS!',True,(255,0,255))
+        display.blit(end,(230,200))
+    if lose:
+        text = pygame.font.SysFont(None,100)
+        end = text.render('BLUE WINS!',True,(255,0,255))
+        display.blit(end,(215,200))
+    if tie:
+        text = pygame.font.SysFont(None,100)
+        end = text.render('TIE GAME!',True,(255,0,255))
+        display.blit(end,(215,200))
+
+def main():
+    pygame.init()
+
+    #color tuples (R,G,B)
+    BLACK  = (0,0,0)
+    GRAY   = (200,200,200)
+    RED    = (150,0,0)
+    BLUE   = (0,0,150)
+    GRAY   = (150,150,150)
+    PURPLE = (255,0,255)
+
+    #other important constants for the game
+    CIRCLE_RADIUS = 45
+    SCREEN_WIDTH  = 800
+    SCREEN_HEIGHT = 600
+    TITLE_FONT  = pygame.font.Font('freesansbold.ttf', 60)
+    BUTTON_FONT = pygame.font.Font('freesansbold.ttf', 30)
+
+    #setting up game window
+    screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
+    screen.fill(BLACK)
+    pygame.display.set_caption("Connect 4")
+
+    #Displaying title and start button
+    title = TITLE_FONT.render("Connect-4!", True, PURPLE)
+    screen.blit(title, [(SCREEN_WIDTH/2)-(title.get_width()/2), (SCREEN_HEIGHT/2)-(title.get_height()/2)-50])
+    start_button = Button(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,"Play",BLACK,BUTTON_FONT,GRAY)
+    screen.blit(start_button.get_title(), start_button.get_coords())
+                
+    #list of all possible x-values where the players' tokens can be dropped
+    x_list = [50,165,280,395,510,625,740]
+
+    #drawing the board in pygame based off of the board matrix
+    board = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]]
+
+    end_turn_time    = 0 #used to track how much time has passed between player 1's end turn and player 2's start turn (for above situation)
+    end_game_pause   = 0
+    start_game_pause = 0
+    p2_turn_count    = 0
+    p1_turn_count    = 0
+
+    p1_turn    = True
+    running    = True
+    game_start = False
+    game_end   = False
+    red_wins   = False
+    blue_wins  = False
+
+    #game loop
+    while running:
+        pygame.display.update()
+        column_number = None
+        mouse = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                break
+            
+            if (start_button.is_mouse_hovering(mouse[0], mouse[1]) and event.type == pygame.MOUSEBUTTONDOWN):
+                start_game_pause = pygame.time.get_ticks()
+                screen.fill(BLACK)
+                draw_board(board,screen,GRAY,CIRCLE_RADIUS)
+                game_start = True
+                    
+            if (game_start == True and event.type == pygame.MOUSEBUTTONDOWN and pygame.time.get_ticks()-start_game_pause >= 300):
+                #tracking the column the piece will drop into
+                for x in x_list:
+                    if (x-CIRCLE_RADIUS-20<=mouse[0]<x+CIRCLE_RADIUS+20):
+                        column_number = x_list.index(x)
+                        #draw_potential_chip(CIRCLE_RADIUS,column_number,board,RED if p1_turn == True else BLUE,screen)
+
+                #player 1 (red's) turn; selected column must have an open spot
+                if p1_turn == True and (board[0][column_number] == 0):
+                    update_board(column_number,board,p1_turn,x_list)
+                    p1_turn_count += 1
+                    draw_player_chip(CIRCLE_RADIUS,RED,BLUE,screen,board)
+                    if (p1_turn_count<21) and (check_horizontal(board,p1_turn) == True or check_vertical(board,p1_turn) == True or check_diagonals(board,p1_turn) == True):
+                        end_game_pause = pygame.time.get_ticks()
+                        red_wins = True
+                        game_end = True
+                        # running = False
+                    if (p1_turn_count > p2_turn_count):
+                        end_turn_time = pygame.time.get_ticks()
+                        p1_turn = False
+
+                #player 2 (blue's) turn; selected column must have an open spot
+                elif (p1_turn == False) and (board[0][column_number] == 0) and (pygame.time.get_ticks() - end_turn_time >= 1):
+                #a buffer of 1 millisecond prevents red and blue chips from dropping on top of each other-----------------^
+                    update_board(column_number,board,p1_turn,x_list)
+                    p2_turn_count += 1
+                    draw_player_chip(CIRCLE_RADIUS,RED,BLUE,screen,board)
+                    if (p2_turn_count<21) and (check_horizontal(board,p1_turn) == True or check_vertical(board,p1_turn) == True or check_diagonals(board,p1_turn) == True):
+                        end_game_pause = pygame.time.get_ticks()
+                        blue_wins = True
+                        game_end = True
+                    if (p1_turn_count == p2_turn_count):
+                        p1_turn = True
+                        
+            #if the board is full and nobody has won yet, then it's a tie
+            if p1_turn_count >= 21:
+                end_game_pause = pygame.time.get_ticks()
+                game_end = True
+
+            if (game_end == True and (pygame.time.get_ticks()-end_game_pause > 200)):
+                p1_turn = None
+                screen.fill(BLACK)
+                if (red_wins):
+                    draw_end_screen(screen,win=True)
+                elif (blue_wins):
+                    draw_end_screen(screen,lose=True)
+                else:
+                    draw_end_screen(screen,tie=True)
+                
+                retry_button = Button((SCREEN_WIDTH/2)-50,SCREEN_HEIGHT/2,"Restart",BLACK,BUTTON_FONT,GRAY)
+                screen.blit(retry_button.get_title(), retry_button.get_coords())
+
+                exit_button = Button((SCREEN_WIDTH/2)+50,SCREEN_HEIGHT/2,"Exit",BLACK,BUTTON_FONT,GRAY)
+                screen.blit(exit_button.get_title(), exit_button.get_coords())
+
+                if (retry_button.is_mouse_hovering(mouse[0], mouse[1]) and event.type == pygame.MOUSEBUTTONDOWN):
+                    pygame.quit()
+                    main()
+
+                if (exit_button.is_mouse_hovering(mouse[0], mouse[1]) and event.type == pygame.MOUSEBUTTONDOWN):
+                    running = False
+                    pygame.quit()
+
+if __name__ == '__main__':
+    main()
