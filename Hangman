@@ -1,18 +1,30 @@
 import random
 
 #declaring VARs
-word_list = ["ALPHA","BETA","CHOCOLATE","DECEPTICON","EXCITE","FATE","GREEN","HOT","INTERNET","JESUS","KICK","LATERAL","MONOPOLY","NO","PYTHON","QUIRKY","RED","SNAKE","TUNGSTEN","URANUS","VENUS","WHITE","XENON","YEARBOOK","ZYZZ"]
+word_list = ["ALPHA","BETA","CHOCOLATE","DECEPTICON","EXCITE","FATE","GREEN","HOT","INTERNET","KICK","LATERAL","MONOPOLY","NO","PYTHON","QUIRKY","RED","SNAKE","TUNGSTEN","URANUS","VENUS","WHITE","XENON","YEARBOOK","ZYZZ"]
 end = len(word_list)-1
-pick_word = word_list[random.randint(0,end)]
-word = []
+chosen_word = word_list[random.randint(0,end)]
+full_word = []
 blank_word = []
 hangman = 0
 w = 0
 l = 0
 
 #printing the board
-for letter in pick_word:
-    word.append(letter)
+for letter in chosen_word:
+    full_word.append(letter)
     blank_word.append("_")
 print(blank_word)
-word_length = int(len(word))
+word_length = int(len(full_word))
+
+running = True
+while running:
+    user_input = input("Type in a letter: ").upper()
+    #pass in the length of the word as a range so that the letter can be found
+    for x in range(word_length):
+        if (user_input == full_word[x]) and (blank_word[x] != full_word[x]):
+            blank_word[x] = set(full_word[x])
+    #if the input isn't found, add to the hangman
+    if user_input not in full_word:
+        hangman += 1
+    print(blank_word)
