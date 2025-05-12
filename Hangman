@@ -8,12 +8,15 @@ blank_word = []
 hangman_count = 0
 w = 0
 l = 0
+out = "["
 
-#printing the empty word
 for letter in chosen_word:
     full_word.append(letter)
     blank_word.append("_")
-print(blank_word)
+#printing the empty word
+for letter in blank_word:
+    out += " " + letter
+print(out + " ]")
 word_length = int(len(full_word))
 
 running = True
@@ -79,4 +82,10 @@ while running:
     #if the inputted letter isn't found, add to the hangman
     if user_input not in full_word:
         hangman_count += 1
-    print(blank_word)
+    out = "["
+    for letter in blank_word:
+        if type(letter) == set:
+            out += " " + list(letter)[0]
+        else:
+            out += " " + letter
+    print(out + " ]")
