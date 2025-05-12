@@ -1,16 +1,15 @@
 import random
 
-#declaring VARs
 word_list = ["ALPHA","BETA","CHOCOLATE","DECEPTICON","EXCITE","FATE","GREEN","HOT","INTERNET","KICK","LATERAL","MONOPOLY","NO","PYTHON","QUIRKY","RED","SNAKE","TUNGSTEN","URANUS","VENUS","WHITE","XENON","YEARBOOK","ZYZZ"]
 end = len(word_list)-1
 chosen_word = word_list[random.randint(0,end)]
 full_word = []
 blank_word = []
-hangman = 0
+hangman_count = 0
 w = 0
 l = 0
 
-#printing the board
+#printing the empty word
 for letter in chosen_word:
     full_word.append(letter)
     blank_word.append("_")
@@ -19,12 +18,65 @@ word_length = int(len(full_word))
 
 running = True
 while running:
+    roundEnd = False
+    
+    #drawing the hangman for every turn
+    if hangman_count == 0:
+        print("_\n|\n‾")
+    if hangman_count == 1:
+        print("_ O\n|\n‾")
+    if hangman_count == 2:
+        print("_ O\n| |\n‾")
+    if hangman_count == 3:
+        print("_ O\n| |-\n‾")
+    if hangman_count == 4:
+        print("_  O\n| -|-\n‾")
+    if hangman_count == 5:
+        print("_  O\n| -|-\n‾ /")
+
+    #win condition
+    if (len(blank_word) == len(full_word)) and ("_" not in blank_word) and (hangman_count < 6):
+        print("YOU WIN!")
+        w += 1
+        roundEnd = True
+
+    #lose condition
+    if hangman_count == 6:
+        print("_  O\n| -|-\n‾ //")
+        print("YOU LOSE!")
+        l += 1
+        roundEnd = True
+
+    if roundEnd == True:
+        print("WINS: ",w)
+        print("LOSSES: ",l)
+        replay = input("PLAY AGAIN? Type yes/no: ").upper()
+        print()
+    #resetting game if player chooses to replay
+    if roundEnd == True and (replay == "YES" or replay == "Y"):
+        end = len(word_list)-1
+        chosen_word = word_list[random.randint(0,end)]
+        full_word = []
+        blank_word = []
+        hangman_count = 0
+        for letter in chosen_word:
+            full_word.append(letter)
+            blank_word.append("_")
+        print(blank_word)
+        print("_\n|\n‾")
+        word_length = int(len(full_word))
+        roundEnd = False
+    if roundEnd == True and not (replay == "YES" or replay == "Y"):
+        print("THANKS FOR PLAYING!")
+        running = False
+        break
+
     user_input = input("Type in a letter: ").upper()
-    #pass in the length of the word as a range so that the letter can be found
-    for x in range(word_length):
-        if (user_input == full_word[x]) and (blank_word[x] != full_word[x]):
-            blank_word[x] = set(full_word[x])
-    #if the input isn't found, add to the hangman
+    #verify if the inputted letter is in the blank word, and if it is, write over it
+    for letter in range(word_length):
+        if (user_input == full_word[letter]) and (blank_word[letter] != full_word[letter]):
+            blank_word[letter] = set(full_word[letter])
+    #if the inputted letter isn't found, add to the hangman
     if user_input not in full_word:
-        hangman += 1
+        hangman_count += 1
     print(blank_word)
