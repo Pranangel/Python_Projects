@@ -1,5 +1,4 @@
 # Program Name: Hangman.py
-# Author: Pranay M.
 # Description: A game consisting of filling in the blanks of a random word. Each incorrect guess will draw a stick figure, and if the figure
 #  is fully drawn, the player loses. If all the blanks are filled, the player wins.
 
