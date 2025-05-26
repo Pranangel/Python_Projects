@@ -1,5 +1,6 @@
 # Program Name: Connect 4.py
-# Description: A board game played with two players on the same computer. The first player to connect a token of their respective color (red or blue)
+# Description: A board game played with two players on the same computer.
+#  The first player to connect a token of their respective color (red or blue)
 #  vertically, horizontally, or diagonally wins. Requires Pygame module.
 
 import pygame
