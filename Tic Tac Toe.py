@@ -15,6 +15,15 @@ def displayBoard(board):
             print(out)
             out = ""
 
+def selectPlayerToken():
+    choice = input("X or O? ")
+    while choice.upper() != "O" and choice.upper() != "X":
+        choice = input("Please try again: X or O? ")
+    if choice.upper() == "X":
+        return("X", "O")
+    else:
+        return ("O", "X")
+
 #determines whether player goes second or first
 if first == 0:
     next = True
@@ -22,3 +31,4 @@ if first == 1:
     next = False
 
 displayBoard(board)
+player, bot = selectPlayerToken()
