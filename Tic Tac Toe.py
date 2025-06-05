@@ -24,6 +24,13 @@ def selectPlayerToken():
     else:
         return ("O", "X")
 
+def playerGoesFirst():
+    coin = random.randint(0,1)
+    if (coin == 0):
+        return True
+    else:
+        return False
+        
 #determines whether player goes second or first
 if first == 0:
     next = True
@@ -31,4 +38,9 @@ if first == 1:
     next = False
 
 displayBoard(board)
-player, bot = selectPlayerToken()
+running = True
+while running:
+    player, bot = selectPlayerToken()
+        if playerGoesFirst():
+        #TODO: Ask for player input
+        pass
