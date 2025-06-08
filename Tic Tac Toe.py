@@ -1,5 +1,5 @@
 # Program Name: Tic Tac Toe.py
-# Description: A board game played against a bot.
+# Description: A board game played against a bot in terminal.
 #  A connection of 3 marks on a 3x3 grid wins the game.
 import random
 
