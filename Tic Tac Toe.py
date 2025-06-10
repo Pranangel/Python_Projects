@@ -30,17 +30,28 @@ def playerGoesFirst():
         return True
     else:
         return False
-        
+       
+def getPlayerChoice(board, player):
+    spot = int(input("Pick a number you want to fill in: "))
+    while (spot > 8) or (spot < 0):
+        spot = int(input("Please choose a number 0-8: "))
+    #mark out which spot is marked on the board
+    for mark in board:
+        if mark == spot:
+            board.remove(mark)
+            board.insert(spot,player)
+    return board
+
 #determines whether player goes second or first
 if first == 0:
     next = True
 if first == 1:
     next = False
 
-displayBoard(board)
+player, bot = selectPlayerToken()
+display(board)
 running = True
 while running:
-    player, bot = selectPlayerToken()
-        if playerGoesFirst():
-        #TODO: Ask for player input
-        pass
+    if playerGoesFirst():
+        board = getPlayerChoice(board, player)
+        display(board)
