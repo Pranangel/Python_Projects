@@ -3,14 +3,14 @@
 #  A connection of 3 marks on a 3x3 grid wins the game.
 import random
 
-board = ["_","_","_","_","_","_","_","_","_"]
+board = [0,1,2,3,4,5,6,7,8]
 next = True
 first = random.randint(0,1)
 
-def displayBoard(board):
+def display(board):
     out = ""
     for i in range(len(board)):
-        out += board[i] + " "
+        out += f"{board[i]} "
         if ((i+1)%3==0):
             print(out)
             out = ""
@@ -30,7 +30,7 @@ def playerGoesFirst():
         return True
     else:
         return False
-       
+    
 def getPlayerChoice(board, player):
     spot = int(input("Pick a number you want to fill in: "))
     while (spot > 8) or (spot < 0):
