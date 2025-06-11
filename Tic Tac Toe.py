@@ -3,8 +3,13 @@
 #  A connection of 3 marks on a 3x3 grid wins the game.
 import random
 
+#declaring VARs
 board = [0,1,2,3,4,5,6,7,8]
+#count = 0
+#copy_count = 0
 next = True
+#end = len(board)-1
+#rand_spot = random.randint(0, end)
 first = random.randint(0,1)
 
 def display(board):
@@ -42,6 +47,20 @@ def getPlayerChoice(board, player):
             board.insert(spot,player)
     return board
 
+#TODO: implement algorithm
+def getBotChoice(board, bot):
+    valid_spot = False
+    while not valid_spot:
+        rand_spot = random.randint(0, 9)
+        for any in board:
+            #if there is an open spot, put it there
+            if (rand_spot == any) and ((any != "O") or (any != "X")):
+                board.remove(any)
+                board.insert(any, bot)
+                valid_spot = True
+                break
+    return board
+
 #determines whether player goes second or first
 if first == 0:
     next = True
@@ -49,9 +68,14 @@ if first == 1:
     next = False
 
 player, bot = selectPlayerToken()
-display(board)
+playersTurn = playerGoesFirst()
 running = True
 while running:
-    if playerGoesFirst():
+    #FIXME: board displays twice and bot always picks spot
+    display(board)
+    if playersTurn:
         board = getPlayerChoice(board, player)
-        display(board)
+        playersTurn = False
+    elif not playersTurn:
+        board = getBotChoice(board, bot)
+        playersTurn = True
