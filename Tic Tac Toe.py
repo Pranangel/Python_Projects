@@ -5,11 +5,7 @@ import random
 
 #declaring VARs
 board = [0,1,2,3,4,5,6,7,8]
-#count = 0
-#copy_count = 0
 next = True
-#end = len(board)-1
-#rand_spot = random.randint(0, end)
 first = random.randint(0,1)
 
 def display(board):
@@ -37,7 +33,7 @@ def playerGoesFirst():
         return False
     
 def getPlayerChoice(board, player):
-    spot = int(input("Pick a number you want to fill in: "))
+    spot = int(input("Player's turn. Pick a number you want to fill in: "))
     while (spot > 8) or (spot < 0):
         spot = int(input("Please choose a number 0-8: "))
     #mark out which spot is marked on the board
@@ -49,6 +45,7 @@ def getPlayerChoice(board, player):
 
 #TODO: implement algorithm
 def getBotChoice(board, bot):
+    print("Bot's turn.")
     valid_spot = False
     while not valid_spot:
         rand_spot = random.randint(0, 9)
@@ -67,13 +64,13 @@ if first == 0:
 if first == 1:
     next = False
 
+display(board)
 player, bot = selectPlayerToken()
 playersTurn = playerGoesFirst()
 running = True
 while running:
-    #FIXME: board displays twice and bot always picks spot
-    display(board)
     if playersTurn:
+        display(board)
         board = getPlayerChoice(board, player)
         playersTurn = False
     elif not playersTurn:
