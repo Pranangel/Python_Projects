@@ -67,6 +67,10 @@ def checkWinner(board):
         return True
     return False
 
+#TODO: add win/lose counter and ask if player wants to play again
+def calculateWinLoss():
+    pass
+
 board = [0,1,2,3,4,5,6,7,8]
 next = True
 first = random.randint(0,1)
