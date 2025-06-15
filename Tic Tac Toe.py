@@ -3,11 +3,6 @@
 #  A connection of 3 marks on a 3x3 grid wins the game.
 import random
 
-#declaring VARs
-board = [0,1,2,3,4,5,6,7,8]
-next = True
-first = random.randint(0,1)
-
 def display(board):
     out = ""
     for i in range(len(board)):
@@ -58,6 +53,24 @@ def getBotChoice(board, bot):
                 break
     return board
 
+def checkWinner(board):
+    #horizontal wins
+    for i in range(0,int(len(board)), 3):
+        if (board[i] == board[i+1] == board[i+2]):
+            return True
+    #vertical wins
+    for i in range(0, int(len(board)/3)):
+        if (board[i] == board[i+3] == board[i+6]):
+            return True
+    #diagonal wins
+    if (board[0] == board[4] == board[8]) or board[2] == board[4] == board[8]:
+        return True
+    return False
+
+board = [0,1,2,3,4,5,6,7,8]
+next = True
+first = random.randint(0,1)
+
 #determines whether player goes second or first
 if first == 0:
     next = True
@@ -72,7 +85,13 @@ while running:
     if playersTurn:
         display(board)
         board = getPlayerChoice(board, player)
+        if checkWinner(board) == True:
+            print("You win!")
+            break
         playersTurn = False
     elif not playersTurn:
         board = getBotChoice(board, bot)
+        if checkWinner(board) == True:
+            print("You lose!")
+            break
         playersTurn = True
