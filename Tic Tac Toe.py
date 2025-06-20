@@ -67,9 +67,8 @@ def checkWinner(board):
         return True
     return False
 
-#TODO: add win/lose counter and ask if player wants to play again
-def calculateWinLoss():
-    pass
+def calculateWinLoss(wins, losses):
+    return wins/losses if losses > 0 else 1
 
 board = [0,1,2,3,4,5,6,7,8]
 next = True
@@ -84,18 +83,22 @@ if first == 1:
 display(board)
 player, bot = selectPlayerToken()
 playersTurn = playerGoesFirst()
+playerWins = 0
+playerLosses = 0
 running = True
 while running:
     if playersTurn:
         display(board)
         board = getPlayerChoice(board, player)
         if checkWinner(board) == True:
-            print("You win!")
+            playerWins += 1
+            print("You win! Your win/loss ratio is ", calculateWinLoss(playerWins, playerLosses))
             break
         playersTurn = False
     elif not playersTurn:
         board = getBotChoice(board, bot)
         if checkWinner(board) == True:
-            print("You lose!")
+            playerLosses += 1
+            print("You lose! Your win/loss ratio is ", calculateWinLoss(playerWins, playerLosses))
             break
         playersTurn = True
