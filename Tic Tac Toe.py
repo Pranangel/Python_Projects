@@ -26,7 +26,8 @@ def playerGoesFirst():
         return True
     else:
         return False
-    
+
+#FIXME: Validate the spot they choose is open
 def getPlayerChoice(board, player):
     spot = int(input("Player's turn. Pick a number you want to fill in: "))
     while (spot > 8) or (spot < 0):
@@ -67,8 +68,18 @@ def checkWinner(board):
         return True
     return False
 
+def checkTie(board):
+    numCount = 0
+    for val in board:
+        if type(val) == int:
+            numCount += 1
+    if (numCount == 0):
+        return True
+    else:
+        return False
+
 def calculateWinLoss(wins, losses):
-    return wins/losses if losses > 0 else 1
+    return wins/losses if losses > 0 else 1.0
 
 board = [0,1,2,3,4,5,6,7,8]
 next = True
@@ -87,18 +98,26 @@ playerWins = 0
 playerLosses = 0
 running = True
 while running:
-    if playersTurn:
+    if playersTurn and not checkTie(board):
         display(board)
         board = getPlayerChoice(board, player)
         if checkWinner(board) == True:
             playerWins += 1
-            print("You win! Your win/loss ratio is ", calculateWinLoss(playerWins, playerLosses))
+            display(board)
+            print("You win! Your win/loss ratio is:", calculateWinLoss(playerWins, playerLosses))
+            break
+        elif checkTie(board) == True:
+            print("It's a tie!")
             break
         playersTurn = False
-    elif not playersTurn:
+    elif not playersTurn and not checkTie(board):
         board = getBotChoice(board, bot)
         if checkWinner(board) == True:
             playerLosses += 1
-            print("You lose! Your win/loss ratio is ", calculateWinLoss(playerWins, playerLosses))
+            display(board)
+            print("You lose! Your win/loss ratio is:", calculateWinLoss(playerWins, playerLosses))
+            break
+        elif checkTie(board) == True:
+            print("It's a tie!")
             break
         playersTurn = True
