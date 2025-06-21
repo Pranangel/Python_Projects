@@ -80,6 +80,15 @@ def checkTie(board):
 def calculateWinLoss(wins, losses):
     return wins/losses if losses > 0 else 1.0
 
+def getRetry():
+    choice = input("Would you like to retry? (Y/N): ").lower()
+    while (choice != "y") or (choice != "n"):
+        choice = input("Please try again. Would you like to retry? (Y/N): ")
+    if (choice == "y"):
+        return True
+    else:
+        return False
+
 board = [0,1,2,3,4,5,6,7,8]
 next = True
 first = random.randint(0,1)
@@ -104,19 +113,23 @@ while running:
             playerWins += 1
             display(board)
             print("You win! Your win/loss ratio is:", calculateWinLoss(playerWins, playerLosses))
-            break
+            retry = getRetry()
         elif checkTie(board) == True:
             print("It's a tie!")
+            retry = getRetry()
             break
         playersTurn = False
+
     elif not playersTurn and not checkTie(board):
         board = getBotChoice(board, bot)
         if checkWinner(board) == True:
             playerLosses += 1
             display(board)
             print("You lose! Your win/loss ratio is:", calculateWinLoss(playerWins, playerLosses))
+            retry = getRetry()
             break
         elif checkTie(board) == True:
             print("It's a tie!")
+            retry = getRetry()
             break
         playersTurn = True
