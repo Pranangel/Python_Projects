@@ -27,11 +27,10 @@ def playerGoesFirst():
     else:
         return False
 
-#FIXME: Validate the spot they choose is open
 def getPlayerChoice(board, player):
     spot = int(input("Player's turn. Pick a number you want to fill in: "))
-    while (spot > 8) or (spot < 0):
-        spot = int(input("Please choose a number 0-8: "))
+    while (spot > 8) or (spot < 0) or (type(board[spot]) is not int):
+        spot = int(input("Please choose an open spot numbered 0-8: "))
     #mark out which spot is marked on the board
     for mark in board:
         if mark == spot:
