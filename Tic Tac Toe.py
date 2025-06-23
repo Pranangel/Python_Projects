@@ -81,10 +81,14 @@ def calculateWinLoss(wins, losses):
     return wins/losses if losses > 0 else 1.0
 
 def getRetry():
-    choice = input("Would you like to retry? (Y/N): ").lower()
-    while (choice != "y") or (choice != "n"):
+    choice = input("Would you like to retry? (Y/N): ")
+    validInput = False
+    while not validInput:
+        if (choice.lower() == "y") or (choice.lower() == "n"):
+            validInput = True
+            break
         choice = input("Please try again. Would you like to retry? (Y/N): ")
-    if (choice == "y"):
+    if (choice.lower() == "y"):
         return True
     else:
         return False
