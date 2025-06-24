@@ -110,6 +110,10 @@ playerWins = 0
 playerLosses = 0
 running = True
 while running:
+    #TODO: end-game scenarios (if player chooses to retry or quit)
+    if roundOver:
+        retry = getRetry()
+
     if playersTurn and not checkTie(board):
         display(board)
         board = getPlayerChoice(board, player)
@@ -117,11 +121,10 @@ while running:
             playerWins += 1
             display(board)
             print("You win! Your win/loss ratio is:", calculateWinLoss(playerWins, playerLosses))
-            retry = getRetry()
+            roundOver = True
         elif checkTie(board) == True:
             print("It's a tie!")
-            retry = getRetry()
-            break
+            roundOver = True
         playersTurn = False
 
     elif not playersTurn and not checkTie(board):
@@ -130,10 +133,8 @@ while running:
             playerLosses += 1
             display(board)
             print("You lose! Your win/loss ratio is:", calculateWinLoss(playerWins, playerLosses))
-            retry = getRetry()
-            break
+            roundOver = True
         elif checkTie(board) == True:
             print("It's a tie!")
-            retry = getRetry()
-            break
+            roundOver = True
         playersTurn = True
