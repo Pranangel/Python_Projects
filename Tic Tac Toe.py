@@ -113,6 +113,10 @@ while running:
     #TODO: end-game scenarios (if player chooses to retry or quit)
     if roundOver:
         retry = getRetry()
+        if (retry == True):
+            board = [0,1,2,3,4,5,6,7,8]
+            next = True
+            first = random.randint(0,1)
 
     if playersTurn and not checkTie(board):
         display(board)
