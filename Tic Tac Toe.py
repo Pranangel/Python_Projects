@@ -118,6 +118,12 @@ while running:
             next = True
             first = random.randint(0,1)
 
+            #determines whether player goes second or first
+            if first == 0:
+                next = True
+            if first == 1:
+                next = False
+
     if playersTurn and not checkTie(board):
         display(board)
         board = getPlayerChoice(board, player)
