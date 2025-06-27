@@ -44,11 +44,11 @@ def getBotChoice(board, bot):
     valid_spot = False
     while not valid_spot:
         rand_spot = random.randint(0, 9)
-        for any in board:
+        for val in board:
             #if there is an open spot, put it there
-            if (rand_spot == any) and ((any != "O") or (any != "X")):
-                board.remove(any)
-                board.insert(any, bot)
+            if (rand_spot == val) and ((val != "O") or (val != "X")):
+                board.remove(val)
+                board.insert(val, bot)
                 valid_spot = True
                 break
     return board
@@ -78,7 +78,7 @@ def checkTie(board):
         return False
 
 def calculateWinLoss(wins, losses):
-    return wins/losses if losses > 0 else 1.0
+    return wins/losses if losses > 0 else wins
 
 def getRetry():
     choice = input("Would you like to retry? (Y/N): ")
@@ -94,35 +94,26 @@ def getRetry():
         return False
 
 board = [0,1,2,3,4,5,6,7,8]
-next = True
-first = random.randint(0,1)
-
-#determines whether player goes second or first
-if first == 0:
-    next = True
-if first == 1:
-    next = False
-
 display(board)
 player, bot = selectPlayerToken()
 playersTurn = playerGoesFirst()
 playerWins = 0
 playerLosses = 0
 running = True
+roundOver = False
 while running:
-    #TODO: end-game scenarios (if player chooses to retry or quit)
     if roundOver:
         retry = getRetry()
         if (retry == True):
             board = [0,1,2,3,4,5,6,7,8]
-            next = True
-            first = random.randint(0,1)
-
-            #determines whether player goes second or first
-            if first == 0:
-                next = True
-            if first == 1:
-                next = False
+            display(board)
+            player, bot = selectPlayerToken()
+            playersTurn = playerGoesFirst()
+            roundOver = False
+        else:
+            print("Thanks for playing!")
+            running = False
+            break
 
     if playersTurn and not checkTie(board):
         display(board)
