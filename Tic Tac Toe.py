@@ -1,6 +1,6 @@
 # Program Name: Tic Tac Toe.py
-# Description: A board game played against a bot in terminal.
-#  A connection of 3 consecutive marks (X or O) on a 3x3 grid wins the game.
+# Description: A board game played against a bot in terminal on a 3x4 grid.
+#  A connection of 3 consecutive marks (X or O) in a vertical, diagonal, or horizontal line wins the game.
 import random
 
 def display(board):
