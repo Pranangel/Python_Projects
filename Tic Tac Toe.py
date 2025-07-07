@@ -38,7 +38,10 @@ def getPlayerChoice(board, player):
             board.insert(spot,player)
     return board
 
-#TODO: implement algorithm
+#TODO: implement minmax algorithm
+class Node:
+    pass
+
 def getBotChoice(board, bot):
     print("Bot's turn.")
     valid_spot = False
