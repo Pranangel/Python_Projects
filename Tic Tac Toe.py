@@ -39,8 +39,7 @@ def getPlayerChoice(board, player):
     return board
 
 #TODO: implement minmax algorithm
-class Node:
-    pass
+def minmax(boardState, depth, botFirst = False): pass
 
 def getBotChoice(board, bot):
     print("Bot's turn.")
