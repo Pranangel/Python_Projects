@@ -2,6 +2,7 @@
 # Description: A board game played against a bot in terminal on a 3x4 grid.
 #  A connection of 3 consecutive marks (X or O) in a vertical, diagonal, or horizontal line wins the game.
 import random
+import sys
 
 def display(board):
     out = ""
@@ -39,7 +40,8 @@ def getPlayerChoice(board, player):
     return board
 
 #TODO: implement minmax algorithm
-def minmax(boardState, depth, botFirst = False): pass
+def minmax(boardState, depth, botFirst = False):
+    evalMax = -sys.maxsize
 
 def getBotChoice(board, bot):
     print("Bot's turn.")
