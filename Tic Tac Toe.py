@@ -46,7 +46,19 @@ def getPlayerChoice(board, player):
 
 #TODO: implement minmax algorithm
 def minmax(boardState, depth, botFirst = False):
-    evalMax = -sys.maxsize
+    #breakpoint for when the game ends, or the depth limit is reached
+    if checkWinner(board) == True or checkTie(board) == True or depth <= 0:
+        return 0
+    
+    #searching through the tree
+    if botFirst:
+        evalMax = -sys.maxsize
+        for i in range(len(board)):
+            if isValidSpot(board[i]):
+                evaluation = minmax(board, depth-1, True)
+                #TODO: update the possible board with a new space X or O
+                evalMax = evaluation if evaluation > evalMax else evalMax
+        return evalMax
 
 def getBotChoice(board, bot):
     print("Bot's turn.")
