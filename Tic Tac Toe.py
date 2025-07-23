@@ -28,6 +28,11 @@ def playerGoesFirst():
     else:
         return False
 
+def isValidSpot(spot):
+    if spot != "X" or spot != "O":
+        return True
+    return False
+    
 def getPlayerChoice(board, player):
     spot = int(input("Player's turn. Pick a number you want to fill in: "))
     while (spot > 8) or (spot < 0) or (type(board[spot]) is not int):
@@ -50,7 +55,7 @@ def getBotChoice(board, bot):
         rand_spot = random.randint(0, 9)
         for val in board:
             #if there is an open spot, put it there
-            if (rand_spot == val) and ((val != "O") or (val != "X")):
+            if (rand_spot == val) and (isValidSpot(val)):
                 board.remove(val)
                 board.insert(val, bot)
                 valid_spot = True
