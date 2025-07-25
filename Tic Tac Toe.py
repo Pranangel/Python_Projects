@@ -29,9 +29,9 @@ def playerGoesFirst():
         return False
 
 def isValidSpot(spot):
-    if spot != "X" or spot != "O":
-        return True
-    return False
+    if spot == "X" or spot == "O":
+        return False
+    return True
     
 def getPlayerChoice(board, player):
     spot = int(input("Player's turn. Pick a number you want to fill in: "))
