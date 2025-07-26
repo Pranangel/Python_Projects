@@ -93,7 +93,7 @@ def checkWinner(board):
         if (board[i] == board[i+3] == board[i+6]):
             return True
     #diagonal wins
-    if (board[0] == board[4] == board[8]) or board[2] == board[4] == board[8]:
+    if (board[0] == board[4] == board[8]) or board[2] == board[4] == board[6]:
         return True
     return False
 
