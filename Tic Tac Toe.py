@@ -44,30 +44,34 @@ def getPlayerChoice(board, player):
             board.insert(spot,player)
     return board
 
-def minmax(gameBoard, depth = 10, isBotsTurn = True, botToken = 'X'):
+
+def minimax(gameBoard, depth = 10, isBotsTurn = True, botToken = "X", playerToken = "O"):
     #breakpoint for when the game ends, or the depth limit is reached
+    #TODO: have minimax return score if the child is an endgame state
     if checkWinner(gameBoard) == True or checkTie(gameBoard) == True or depth <= 0:
+        return evaluate(gameBoard, isBotsTurn)
         return 0, -1
-    
-    copy = [val for val in gameBoard]
-    
-    #searching through the tree
+
     bestSpot = -1
     evalMax = -(sys.maxsize-1) if isBotsTurn else sys.maxsize #bot is maximizing player
-    for i in range(len(copy)):
-        if isValidSpot(copy[i]):
-            copy[i] = " "
-            evaluation, bestSpot = minmax(copy, depth-1, False if isBotsTurn else True, botToken)
+    
+    #searching through the tree
+    for i in range(len(gameBoard)):
+        if isValidSpot(gameBoard[i]):
+            gameBoard[i] = botToken if isBotsTurn else playerToken
+            evaluation, bestSpot = minimax(gameBoard, depth-1, False if isBotsTurn else True, botToken)
+
             if evaluation > evalMax and isBotsTurn:
                 evalMax = evaluation
                 bestSpot = i
+
             if evaluation < evalMax and not isBotsTurn:
                 evalMax = evaluation
                 bestSpot = i
-            return evalMax, bestSpot
+
+            gameBoard[i] = i
     
-    if bestSpot == -1:
-        return 0, -1
+    return (0, -1) if bestSpot == -1 else (evalMax, bestSpot)
 
 def getBotChoice(board, bot):
     print("Bot's turn.")
