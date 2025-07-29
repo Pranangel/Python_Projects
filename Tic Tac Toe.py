@@ -93,19 +93,19 @@ def getBotChoice(board, bot):
                 break
     return board
 
-def checkWinner(board):
+def checkWinner(board, botToken):
     #horizontal wins
     for i in range(0,int(len(board)), 3):
         if (board[i] == board[i+1] == board[i+2]):
-            return True
+            return (True, "bot" if board[i] == botToken else "player")
     #vertical wins
     for i in range(0, int(len(board)/3)):
         if (board[i] == board[i+3] == board[i+6]):
-            return True
+            return (True, "bot" if board[i] == botToken else "player")
     #diagonal wins
-    if (board[0] == board[4] == board[8]) or board[2] == board[4] == board[6]:
-        return True
-    return False
+    if (board[0] == board[4] == board[8]) or (board[2] == board[4] == board[6]):
+        return (True, "bot" if board[4] == botToken else "player")
+    return (False, None)
 
 def checkTie(board):
     numCount = 0
