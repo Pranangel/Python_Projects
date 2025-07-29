@@ -158,7 +158,7 @@ while running:
     if playersTurn and not checkTie(board):
         display(board)
         board = getPlayerChoice(board, player)
-        if checkWinner(board) == True:
+        if checkWinner(board, bot) == (True, "player"):
             playerWins += 1
             display(board)
             print("You win! Your win/loss ratio is:", calculateWinLoss(playerWins, playerLosses))
@@ -170,7 +170,7 @@ while running:
 
     elif not playersTurn and not checkTie(board):
         board = getBotChoice(board, bot)
-        if checkWinner(board) == True:
+        if checkWinner(board, bot) == (True, "bot"):
             playerLosses += 1
             display(board)
             print("You lose! Your win/loss ratio is:", calculateWinLoss(playerWins, playerLosses))
