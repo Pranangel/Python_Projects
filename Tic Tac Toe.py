@@ -51,33 +51,47 @@ def evaluate(gameBoard, isBotsTurn = True):
         return -10
     return 0
     
-def minimax(gameBoard, depth = 10, isBotsTurn = True, botToken = "X", playerToken = "O"):
-    #breakpoint for when the game ends, or the depth limit is reached
-    #TODO: have minimax return score if the child is an endgame state
-    if checkWinner(gameBoard) == True or checkTie(gameBoard) == True or depth <= 0:
-        return evaluate(gameBoard, isBotsTurn)
-        return 0, -1
 
-    bestSpot = -1
-    evalMax = -(sys.maxsize-1) if isBotsTurn else sys.maxsize #bot is maximizing player
+def minimax(gameBoard, depth = 10, isBotsTurn = True, botToken = "X", playerToken = "O"):
+    winnerExists, winner = checkWinner(gameBoard, botToken)
+    #breakpoint for when the game ends, or the depth limit is reached
+    if winnerExists == True or checkTie(gameBoard) == True or depth <= 0:
+        return evaluate(gameBoard, botToken, depth), -1
+
+    eval = -(sys.maxsize-1) if isBotsTurn else sys.maxsize #bot is maximizing, player is minimizing
     
-    #searching through the tree
+    #searching through the tree for all possible moves, adding their scores and indices to evalScores
+    evalScores = []
     for i in range(len(gameBoard)):
         if isValidSpot(gameBoard[i]):
             gameBoard[i] = botToken if isBotsTurn else playerToken
-            evaluation, bestSpot = minimax(gameBoard, depth-1, False if isBotsTurn else True, botToken)
-
-            if evaluation > evalMax and isBotsTurn:
-                evalMax = evaluation
-                bestSpot = i
-
-            if evaluation < evalMax and not isBotsTurn:
-                evalMax = evaluation
-                bestSpot = i
-
+            if isBotsTurn:
+                nextEval, _ = minimax(gameBoard, depth-1, False, botToken, playerToken)
+                eval = max(eval, nextEval)
+            else:
+                nextEval, _ = minimax(gameBoard, depth-1, True, botToken, playerToken)
+                eval = min(eval, nextEval)
             gameBoard[i] = i
+
+            evalScores.append((eval, i))
     
-    return (0, -1) if bestSpot == -1 else (evalMax, bestSpot)
+    #determining the best possible move for minimizing and maximizing player
+    bestSpot = -1
+    if isBotsTurn:
+        bestEval = -(sys.maxsize-1)
+        for score, spot in evalScores:
+            if score > bestEval:
+                bestEval = score
+                bestSpot = spot
+
+    if not isBotsTurn:
+        bestEval = sys.maxsize
+        for score, spot in evalScores:
+            if score < bestEval:
+                bestEval = score
+                bestSpot = spot
+
+    return bestEval, bestSpot
 
 def getBotChoice(board, bot):
     print("Bot's turn.")
