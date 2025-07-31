@@ -93,18 +93,13 @@ def minimax(gameBoard, depth = 10, isBotsTurn = True, botToken = "X", playerToke
 
     return bestEval, bestSpot
 
+
 def getBotChoice(board, bot):
     print("Bot's turn.")
-    valid_spot = False
-    while not valid_spot:
-        rand_spot = random.randint(0, 9)
-        for val in board:
-            #if there is an open spot, put it there
-            if (rand_spot == val) and (isValidSpot(val)):
-                board.remove(val)
-                board.insert(val, bot)
-                valid_spot = True
-                break
+    boardCopy = [val for val in board]
+    _, bestSpot = minimax(boardCopy, 10, True, bot, "X" if bot == "O" else "O")
+    print(f"Bot chooses spot {bestSpot}.")
+    board[bestSpot] = bot
     return board
 
 def checkWinner(board, botToken):
