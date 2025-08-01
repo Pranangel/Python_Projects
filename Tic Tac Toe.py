@@ -44,14 +44,13 @@ def getPlayerChoice(board, player):
             board.insert(spot,player)
     return board
 
-def evaluate(gameBoard, isBotsTurn = True):
-    if checkWinner(gameBoard) == True and isBotsTurn:
-        return 10
-    elif checkWinner(gameBoard) == True and not isBotsTurn:
-        return -10
+def evaluate(gameBoard, botToken, depth):
+    if checkWinner(gameBoard, botToken) == (True, "bot"):
+        return 10-depth
+    if checkWinner(gameBoard, botToken) == (True, "player"):
+        return -10+depth
     return 0
     
-
 def minimax(gameBoard, depth = 10, isBotsTurn = True, botToken = "X", playerToken = "O"):
     winnerExists, winner = checkWinner(gameBoard, botToken)
     #breakpoint for when the game ends, or the depth limit is reached
