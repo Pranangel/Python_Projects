@@ -172,6 +172,7 @@ while running:
             print("You win! Your win/loss ratio is:", calculateWinLoss(playerWins, playerLosses))
             roundOver = True
         elif checkTie(board) == True:
+            display(board)
             print("It's a tie!")
             roundOver = True
         playersTurn = False
@@ -184,6 +185,7 @@ while running:
             print("You lose! Your win/loss ratio is:", calculateWinLoss(playerWins, playerLosses))
             roundOver = True
         elif checkTie(board) == True:
+            display(board)
             print("It's a tie!")
             roundOver = True
         playersTurn = True
