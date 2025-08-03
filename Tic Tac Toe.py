@@ -44,33 +44,33 @@ def getPlayerChoice(board, player):
             board.insert(spot,player)
     return board
 
-def evaluate(gameBoard, botToken, depth):
-    if checkWinner(gameBoard, botToken) == (True, "bot"):
+def evaluate(board, botToken, depth):
+    if checkWinner(board, botToken) == (True, "bot"):
         return 10-depth
-    if checkWinner(gameBoard, botToken) == (True, "player"):
+    if checkWinner(board, botToken) == (True, "player"):
         return -10+depth
     return 0
     
-def minimax(gameBoard, depth = 10, isBotsTurn = True, botToken = "X", playerToken = "O"):
-    winnerExists, winner = checkWinner(gameBoard, botToken)
+def minimax(board, depth = 10, isBotsTurn = True, botToken = "X", playerToken = "O"):
+    winnerExists, winner = checkWinner(board, botToken)
     #breakpoint for when the game ends, or the depth limit is reached
-    if winnerExists == True or checkTie(gameBoard) == True or depth <= 0:
-        return evaluate(gameBoard, botToken, depth), -1
+    if winnerExists == True or checkTie(board) == True or depth <= 0:
+        return evaluate(board, botToken, depth), -1
 
     eval = -(sys.maxsize-1) if isBotsTurn else sys.maxsize #bot is maximizing, player is minimizing
     
     #searching through the tree for all possible moves, adding their scores and indices to evalScores
     evalScores = []
-    for i in range(len(gameBoard)):
-        if isValidSpot(gameBoard[i]):
-            gameBoard[i] = botToken if isBotsTurn else playerToken
+    for i in range(len(board)):
+        if isValidSpot(board[i]):
+            board[i] = botToken if isBotsTurn else playerToken
             if isBotsTurn:
-                nextEval, _ = minimax(gameBoard, depth-1, False, botToken, playerToken)
+                nextEval, _ = minimax(board, depth-1, False, botToken, playerToken)
                 eval = max(eval, nextEval)
             else:
-                nextEval, _ = minimax(gameBoard, depth-1, True, botToken, playerToken)
+                nextEval, _ = minimax(board, depth-1, True, botToken, playerToken)
                 eval = min(eval, nextEval)
-            gameBoard[i] = i
+            board[i] = i
 
             evalScores.append((eval, i))
     
