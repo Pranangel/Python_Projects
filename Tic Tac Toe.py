@@ -92,12 +92,10 @@ def minimax(board, depth = 10, isBotsTurn = True, botToken = "X", playerToken = 
 
     return bestEval, bestSpot
 
-
 def getBotChoice(board, bot):
-    print("Bot's turn.")
     boardCopy = [val for val in board]
     _, bestSpot = minimax(boardCopy, 10, True, bot, "X" if bot == "O" else "O")
-    print(f"Bot chooses spot {bestSpot}.")
+    print(f"Bot's turn. Bot chooses spot {bestSpot}.")
     board[bestSpot] = bot
     return board
 
