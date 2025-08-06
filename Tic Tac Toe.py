@@ -141,9 +141,10 @@ def getRetry():
         return False
 
 board = [0,1,2,3,4,5,6,7,8]
-display(board)
 player, bot = selectPlayerToken()
 playersTurn = playerGoesFirst()
+if not playersTurn:
+    display(board)
 playerWins = 0
 playerLosses = 0
 running = True
