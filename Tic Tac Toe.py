@@ -34,14 +34,26 @@ def isValidSpot(spot):
     return True
     
 def getPlayerChoice(board, player):
-    spot = int(input("Player's turn. Pick a number you want to fill in: "))
-    while (spot > 8) or (spot < 0) or (type(board[spot]) is not int):
-        spot = int(input("Please choose an open spot numbered 0-8: "))
+    print("Player's turn.")
+
+    #validating number input
+    spot = -1
+    invalidSpot = True
+    while invalidSpot:
+        try:
+            spot = int(input("Pick an open spot numbered 0-8 you want to fill in: "))
+        except ValueError:
+            print("Invalid input.", end = " ")
+            continue
+        if (0 <= spot) and (spot <= 8):
+            invalidSpot = False
+
     #mark out which spot is marked on the board
     for mark in board:
         if mark == spot:
             board.remove(mark)
             board.insert(spot,player)
+
     return board
 
 def evaluate(board, botToken, depth):
