@@ -186,8 +186,6 @@ while running:
         elif checkTie(board) == True:
             display(board)
             print("It's a tie!")
-            roundOver = True
-        print("\n---------------------------------\n")
         playersTurn = False
 
     elif not playersTurn and not checkTie(board):
@@ -201,5 +199,4 @@ while running:
             display(board)
             print("It's a tie!")
             roundOver = True
-        print("\n---------------------------------\n")
         playersTurn = True
