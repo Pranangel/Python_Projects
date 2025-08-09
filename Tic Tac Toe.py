@@ -201,4 +201,5 @@ while running:
             display(board)
             print("It's a tie!")
             roundOver = True
+        print()
         playersTurn = True
