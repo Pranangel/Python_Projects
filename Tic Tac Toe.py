@@ -43,7 +43,7 @@ def getPlayerChoice(board, player):
         try:
             spot = int(input("Pick an open spot numbered 0-8 you want to fill in: "))
         except ValueError:
-            print("Invalid input.", end = " ")
+            print("Invalid input!", end = " ")
             continue
         if (0 <= spot) and (spot <= 8):
             invalidSpot = False
