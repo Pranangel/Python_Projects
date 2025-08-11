@@ -166,9 +166,10 @@ while running:
         retry = getRetry()
         if (retry == True):
             board = [0,1,2,3,4,5,6,7,8]
-            display(board)
             player, bot = selectPlayerToken()
             playersTurn = playerGoesFirst()
+            if not playersTurn:
+                display(board)
             roundOver = False
         else:
             print("Thanks for playing!")
