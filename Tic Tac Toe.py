@@ -1,7 +1,6 @@
 # Program Name: Tic Tac Toe.py
 # Description: A board game played against the minimax algorithm in terminal on a 3x3 grid.
 #  A connection of 3 consecutive marks (X or O) in a vertical, diagonal, or horizontal line wins the game.
-import random
 import sys
 
 def display(board):
